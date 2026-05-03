@@ -131,6 +131,7 @@ function useStatusState(): StatusState {
   const [status, setStatus] = useState<TraderStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const statusRef = useRef<TraderStatus | null>(null);
   const inFlight = useRef<Promise<void> | null>(null);
 
   const refresh = useCallback(async () => {
@@ -150,9 +151,10 @@ function useStatusState(): StatusState {
         }
 
         const next = (await response.json()) as TraderStatus;
+        statusRef.current = next;
         setStatus(next);
       } catch (cause) {
-        setError(cause instanceof Error ? cause.message : String(cause));
+        setError(statusRef.current ? null : describeStatusFetchError(cause));
       } finally {
         setLoading(false);
         inFlight.current = null;
@@ -176,4 +178,11 @@ function useStatusState(): StatusState {
   }, [refresh]);
 
   return useMemo(() => ({ status, loading, error, refresh }), [status, loading, error, refresh]);
+}
+
+function describeStatusFetchError(cause: unknown): string {
+  const message = cause instanceof Error ? cause.message : String(cause);
+  return message === "Failed to fetch"
+    ? "Unable to reach /api/status. Make sure the Next.js dev server is running, then refresh infrastructure status."
+    : message;
 }

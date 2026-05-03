@@ -693,7 +693,7 @@ export function TraderConsole() {
                               {participant.service}
                             </span>
                           ) : null}
-                          <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-slate-400">{participant.source}</span>
+                          {/* <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-slate-400">{participant.source}</span> */}
                         </div>
                         <p className="mt-1 truncate font-mono text-xs text-slate-400">{shortPeer(participant.peerId)}</p>
                         {participant.pairs.length ? (

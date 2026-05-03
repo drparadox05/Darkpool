@@ -60,7 +60,7 @@ export function Hero() {
               <p className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/70">Live execution model</p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">Intent-to-settlement loop</h2>
             </div>
-            <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">Mainnet-style demo</span>
+            {/* <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">Mainnet-style demo</span> */}
           </div>
 
           <div className="mt-5 space-y-3">
