@@ -1,0 +1,37 @@
+{
+  "name": "darkpool-agents",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @darkpool/agent-runtime --filter @darkpool/web dev",
+    "dev:agents": "pnpm --filter @darkpool/agent-runtime dev",
+    "dev:web": "pnpm --filter @darkpool/web dev",
+    "compile:contracts": "pnpm --filter @darkpool/contracts compile",
+    "test:contracts": "pnpm --filter @darkpool/contracts test",
+    "deploy:contracts:local": "pnpm --filter @darkpool/contracts deploy:local",
+    "preflight:galileo": "pnpm --filter @darkpool/contracts preflight:galileo",
+    "deploy:contracts:galileo": "pnpm --filter @darkpool/contracts deploy:galileo",
+    "preflight:gensyn:axl": "pnpm --filter @darkpool/agent-runtime preflight:gensyn:axl",
+    "smoke": "pnpm --filter @darkpool/agent-runtime smoke",
+    "smoke:gensyn:axl": "pnpm --filter @darkpool/agent-runtime smoke:gensyn:axl",
+    "smoke:phase3": "pnpm --filter @darkpool/agent-runtime smoke:phase3",
+    "smoke:0g:storage": "pnpm --filter @darkpool/agent-runtime smoke:0g:storage",
+    "providers:0g:compute": "pnpm --filter @darkpool/agent-runtime providers:0g:compute",
+    "fund:0g:compute": "pnpm --filter @darkpool/agent-runtime fund:0g:compute",
+    "smoke:0g:compute": "pnpm --filter @darkpool/agent-runtime smoke:0g:compute",
+    "demo:0g:galileo": "pnpm --filter @darkpool/agent-runtime demo:0g:galileo",
+    "publish:inft:brain": "pnpm --filter @darkpool/agent-runtime publish:inft:brain",
+    "smoke:phase4": "pnpm --filter @darkpool/agent-runtime smoke:phase4",
+    "smoke:settlement": "pnpm --filter @darkpool/agent-runtime smoke:settlement",
+    "smoke:settlement:galileo": "pnpm --filter @darkpool/agent-runtime smoke:settlement:galileo",
+    "fund:settlement:galileo": "pnpm --filter @darkpool/agent-runtime fund:settlement:galileo",
+    "demo": "pnpm --stream --parallel --filter @darkpool/agent-runtime --filter @darkpool/web demo",
+    "ws-hub": "pnpm --filter @darkpool/agent-runtime ws-hub",
+    "typecheck": "pnpm -r typecheck",
+    "build": "pnpm -r build"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

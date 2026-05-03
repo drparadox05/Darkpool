@@ -1,0 +1,35 @@
+# --- secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+private.*.json
+
+# --- dependencies ---
+node_modules
+
+# --- build output ---
+.next
+dist
+coverage
+.turbo
+*.log
+*.tsbuildinfo
+
+# --- solidity ---
+artifacts
+cache
+typechain-types
+
+# --- agent runtime local state ---
+.darkpool-storage
+
+# --- axl node binary (checked out locally via `go build`) ---
+packages/axl-bin/node
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea
+.vscode

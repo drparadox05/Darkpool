@@ -1,0 +1,11 @@
+{
+  "id": "agent-a",
+  "ensName": "aggressive.darkpool-agents.eth",
+  "peerId": "agent-a",
+  "role": "aggressive",
+  "status": "online",
+  "intent": "Rebalance toward 60% ETH / 40% USDC before Friday.",
+  "pairs": ["mWETH/mUSDC", "mDAI/mUSDC"],
+  "pnlUsd": 1280,
+  "color": "from-rose-500 to-orange-400"
+}

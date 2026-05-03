@@ -1,0 +1,45 @@
+{
+  "name": "@darkpool/agent-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/demo.ts",
+    "agent": "tsx src/index.ts",
+    "mock-axl": "tsx src/mock-axl-node.ts",
+    "preflight:gensyn:axl": "tsx src/gensyn-axl-preflight.ts",
+    "smoke": "tsx src/smoke-test.ts",
+    "smoke:gensyn:axl": "tsx src/gensyn-axl-smoke-test.ts",
+    "smoke:phase3": "tsx src/phase3-smoke-test.ts",
+    "smoke:0g:storage": "tsx src/zerog-storage-smoke-test.ts",
+    "providers:0g:compute": "tsx src/zerog-compute-providers.ts",
+    "fund:0g:compute": "tsx src/zerog-compute-fund.ts",
+    "smoke:0g:compute": "tsx src/zerog-compute-smoke-test.ts",
+    "demo:0g:galileo": "tsx src/zerog-galileo-demo.ts",
+    "publish:inft:brain": "tsx src/inft-brain-publish.ts",
+    "smoke:phase4": "tsx src/phase4-smoke-test.ts",
+    "smoke:settlement": "tsx src/settlement-smoke-test.ts",
+    "smoke:settlement:galileo": "tsx src/galileo-settlement-smoke-test.ts",
+    "fund:settlement:galileo": "tsx src/galileo-settlement-liquidity.ts",
+    "demo": "tsx src/phase4-demo.ts",
+    "ws-hub": "tsx src/ws-hub.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "pnpm typecheck"
+  },
+  "dependencies": {
+    "@0gfoundation/0g-storage-ts-sdk": "^1.2.8",
+    "@0gfoundation/0g-ts-sdk": "^1.2.8",
+    "@0glabs/0g-serving-broker": "^0.7.8",
+    "@0glabs/0g-ts-sdk": "^0.3.3",
+    "@darkpool/shared": "workspace:*",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

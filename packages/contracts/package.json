@@ -1,0 +1,28 @@
+{
+  "name": "@darkpool/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.ts",
+    "preflight:galileo": "hardhat run scripts/preflight-galileo.ts --network ogGalileo",
+    "deploy:galileo": "hardhat run scripts/deploy.ts --network ogGalileo",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "pnpm compile"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.1.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.2",
+    "ethers": "^6.13.4",
+    "hardhat": "^2.22.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

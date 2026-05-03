@@ -1,0 +1,11 @@
+{
+  "id": "agent-b",
+  "ensName": "conservative.darkpool-agents.eth",
+  "peerId": "agent-b",
+  "role": "conservative",
+  "status": "online",
+  "intent": "Preserve stablecoin value and quote only inside risk limits.",
+  "pairs": ["mUSDC/mWETH", "mUSDC/mDAI"],
+  "pnlUsd": 420,
+  "color": "from-sky-500 to-cyan-300"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "agent-c",
+  "ensName": "arbitrageur.darkpool-agents.eth",
+  "peerId": "agent-c",
+  "role": "arbitrageur",
+  "status": "offline",
+  "intent": "Monitor spreads and join when settlement contracts are deployed.",
+  "pairs": ["mWETH/mDAI", "mDAI/mUSDC"],
+  "pnlUsd": 0,
+  "color": "from-violet-500 to-fuchsia-400"
+}
