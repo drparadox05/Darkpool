@@ -77,7 +77,7 @@ export async function startDarkpoolMcpServer(options: DarkpoolMcpServerOptions):
 
       sendJson(res, 404, { ok: false, error: `Route not found: ${req.method} ${url.pathname}` });
     } catch (error) {
-      sendJson(res, 500, { ok: false, error: error instanceof Error ? error.message : String(error) });
+      sendJson(res, 500, { ok: false, error: errorMessage(error, "MCP request failed") });
     }
   });
 
@@ -133,17 +133,34 @@ async function handleJsonRpcMcpRequest(
       };
     }
 
-    const output = await tool.handler(request.params?.arguments, {
-      profile,
-      call: {
-        id: String(id ?? ""),
-        service: "darkpool",
-        tool: name,
-        input: request.params?.arguments,
-        from: "gensyn-axl",
-        to: profile.peerId
-      }
-    });
+    let output: unknown;
+
+    try {
+      output = await tool.handler(request.params?.arguments, {
+        profile,
+        call: {
+          id: String(id ?? ""),
+          service: "darkpool",
+          tool: name,
+          input: request.params?.arguments,
+          from: "gensyn-axl",
+          to: profile.peerId
+        }
+      });
+    } catch (error) {
+      return {
+        status: 200,
+        body: {
+          jsonrpc: "2.0",
+          id,
+          error: {
+            code: -32000,
+            message: errorMessage(error, `Tool ${name} failed`),
+            data: { tool: name }
+          }
+        }
+      };
+    }
 
     return {
       status: 200,
@@ -166,6 +183,15 @@ async function handleJsonRpcMcpRequest(
       error: { code: -32601, message: `Unsupported MCP method ${request.method ?? "<missing>"}` }
     }
   };
+}
+
+function errorMessage(error: unknown, fallback: string): string {
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  const message = String(error);
+  return message ? message : fallback;
 }
 
 export function createPingTool(profile: AgentProfile): ToolRegistration {

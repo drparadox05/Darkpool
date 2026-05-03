@@ -65,7 +65,7 @@ export function createGetQuoteTool(deps: DarkpoolToolDeps): ToolRegistration {
         referencePrice: input.referencePrice
       });
       publishComputeEvent(deps, "quote", quote.compute);
-      await deps.persistMemoryEvent?.({
+      persistMemoryEventInBackground(deps, {
         timestamp: new Date().toISOString(),
         kind: "negotiation",
         content: `Quoted ${quote.sellAmount} ${quote.sellToken} for ${quote.buyAmount} ${quote.buyToken} using ${quote.compute?.provider ?? "unknown"} compute request ${quote.compute?.requestId ?? "n/a"}.`
@@ -187,7 +187,7 @@ export function createProposeSwapTool(deps: DarkpoolToolDeps): ToolRegistration 
         targetPair: `${input.signedOrder.order.sellToken}/${input.signedOrder.order.buyToken}`
       });
       publishComputeEvent(deps, "counter", counterQuote.compute);
-      await deps.persistMemoryEvent?.({
+      persistMemoryEventInBackground(deps, {
         timestamp: new Date().toISOString(),
         kind: "negotiation",
         content: `Countered with ${counterQuote.sellAmount} ${counterQuote.sellToken} for ${counterQuote.buyAmount} ${counterQuote.buyToken} using ${counterQuote.compute?.provider ?? "unknown"} compute request ${counterQuote.compute?.requestId ?? "n/a"}.`
@@ -243,7 +243,7 @@ export function createAcceptSwapTool(deps: DarkpoolToolDeps): ToolRegistration {
         return { accepted: false, rationale: mismatch };
       }
 
-      await deps.persistMemoryEvent?.({
+      persistMemoryEventInBackground(deps, {
         timestamp: new Date().toISOString(),
         kind: "negotiation",
         content: `Verified complementary signed orders ${input.orderA.orderHash} and ${input.orderB.orderHash}.`
@@ -274,7 +274,7 @@ export function createSignSettlementTool(deps: DarkpoolToolDeps): ToolRegistrati
         agent: deps.profile.ensName,
         orderHash: signed.orderHash
       });
-      await deps.persistMemoryEvent?.({
+      persistMemoryEventInBackground(deps, {
         timestamp: new Date().toISOString(),
         kind: "settlement",
         content: `Signed settlement order ${signed.orderHash} for ${input.order.sellAmount} ${input.order.sellToken} into ${input.order.buyAmount} ${input.order.buyToken}.`
@@ -378,7 +378,7 @@ function getMaxSlippageBps(deps: DarkpoolToolDeps): number {
   return maxSlippageBps;
 }
 
-function publishComputeEvent(deps: DarkpoolToolDeps, stage: "quote" | "counter", compute: ComputeResponse | undefined): void {
+function publishComputeEvent(deps: DarkpoolToolDeps, stage: "quote" | "counter", compute?: ComputeResponse): void {
   if (!compute) {
     return;
   }
@@ -395,5 +395,20 @@ function publishComputeEvent(deps: DarkpoolToolDeps, stage: "quote" | "counter",
     serviceProviderAddress,
     verifyResponses,
     contentPreview: compute.content.slice(0, 240)
+  });
+}
+
+function persistMemoryEventInBackground(deps: DarkpoolToolDeps, event: BrainMemoryEvent): void {
+  if (!deps.persistMemoryEvent) {
+    return;
+  }
+
+  void deps.persistMemoryEvent(event).catch((error) => {
+    deps.tee.publish("0g:storage", {
+      stage: "memory-persist-failed",
+      provider: "unknown",
+      eventKind: event.kind,
+      detail: error instanceof Error ? error.message : String(error)
+    });
   });
 }
