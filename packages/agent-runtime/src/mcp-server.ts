@@ -69,8 +69,7 @@ export async function startDarkpoolMcpServer(options: DarkpoolMcpServerOptions):
           return;
         }
 
-        const output = await tool.handler(call.input, { call, profile: options.profile });
-        const result: McpToolResult = { id: call.id, ok: true, result: output };
+        const result = await handleDirectToolCall(call, tool, options.profile);
         sendJson(res, 200, result);
         return;
       }
@@ -98,6 +97,15 @@ export async function startDarkpoolMcpServer(options: DarkpoolMcpServerOptions):
       await new Promise<void>((resolveClose, reject) => server.close((error) => (error ? reject(error) : resolveClose())));
     }
   };
+}
+
+async function handleDirectToolCall(call: McpToolCall, tool: ToolRegistration, profile: AgentProfile): Promise<McpToolResult> {
+  try {
+    const output = await tool.handler(call.input, { call, profile });
+    return { id: call.id, ok: true, result: output };
+  } catch (error) {
+    return { id: call.id, ok: false, error: errorMessage(error, `Tool ${call.tool} failed`) };
+  }
 }
 
 async function handleJsonRpcMcpRequest(

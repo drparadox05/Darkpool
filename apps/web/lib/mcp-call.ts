@@ -61,7 +61,7 @@ async function callMcpToolAtUrl<T>(axlUrl: string, params: McpCallParams): Promi
     return { ok: false, status: 502, error: `${params.errorPrefix}: HTTP ${response.status} ${response.statusText}: ${rawText}` };
   }
 
-  const parsed = JSON.parse(rawText) as JsonRpcResponse<unknown>;
+  const parsed = parseJsonRpcResponse(rawText);
 
   if (parsed.error) {
     return { ok: false, status: 502, error: parsed.error.message ?? `${params.errorPrefix} with JSON-RPC error` };
@@ -80,7 +80,11 @@ function decodeMcpResult<T>(result: unknown): T {
       const textPart = result.content.find((part) => isRecord(part) && typeof part.text === "string");
 
       if (isRecord(textPart) && typeof textPart.text === "string") {
-        return JSON.parse(textPart.text) as T;
+        try {
+          return JSON.parse(textPart.text) as T;
+        } catch {
+          return textPart.text as T;
+        }
       }
     }
   }
@@ -90,4 +94,12 @@ function decodeMcpResult<T>(result: unknown): T {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
+}
+
+function parseJsonRpcResponse(rawText: string): JsonRpcResponse<unknown> {
+  try {
+    return JSON.parse(rawText) as JsonRpcResponse<unknown>;
+  } catch {
+    return { error: { message: `Invalid JSON-RPC response: ${rawText.slice(0, 240)}` } };
+  }
 }
